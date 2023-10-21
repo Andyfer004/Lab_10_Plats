@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.zezzi.eventzezziapp.ui.meals.view.DishesCategoriesScreen
 import com.zezzi.eventzezziapp.ui.meals.view.MealsCategoriesScreen
 
 @Composable
@@ -16,7 +17,13 @@ fun Navigation(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         composable(route = NavigationState.Meals.route) {
-            MealsCategoriesScreen(navController)
+            MealsCategoriesScreen(navController = navController)
+        }
+        composable(route = "DishesCategoriesScreen/{mealName}") { backStackEntry ->
+            val mealName = backStackEntry.arguments?.getString("mealName")
+            mealName?.let {
+                DishesCategoriesScreen(mealName = it, navController = navController)
+            }
         }
     }
 }

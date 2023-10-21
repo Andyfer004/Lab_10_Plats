@@ -4,16 +4,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
@@ -39,8 +40,8 @@ import com.zezzi.eventzezziapp.navigation.AppBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MealsCategoriesScreen(
-    navController: NavController,
     viewModel: MealsCategoriesViewModel = viewModel()
+    , navController: NavController
 ) {
     val rememberedMeals: MutableState<List<MealResponse>> =
         remember { mutableStateOf(emptyList<MealResponse>()) }
@@ -63,11 +64,16 @@ fun MealsCategoriesScreen(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .background(color = Color(20, 33, 61)),
+                .background(color = Color(20, 33, 61))
+                .verticalScroll(rememberScrollState()),
 
         ) {
             rememberedMeals.value.forEach { meal ->
-                Surface(
+                Button(
+                    onClick = {
+                        navController.navigate("DishesCategoriesScreen/${meal.name}")
+                        // Aquí puedes poner la acción que se ejecutará cuando se haga clic en el botón.
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
@@ -76,7 +82,7 @@ fun MealsCategoriesScreen(
                             shape = RoundedCornerShape(20.dp),
                         ),
                     shape = RoundedCornerShape(20.dp),
-                    color = Color.White
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                 ) {
                     Row(
                         modifier = Modifier
